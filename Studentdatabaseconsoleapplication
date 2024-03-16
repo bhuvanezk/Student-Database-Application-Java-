@@ -1,0 +1,112 @@
+
+
+package studentdatabaseApplication;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    private static int id = 1000;
+    private String name;
+    private String studentID;
+    private int gradeYear;
+    private ArrayList<String> courses = new ArrayList<>();
+    private double balance = 0;
+    private final double courseCost = 600;
+
+    public Student(String name, int gradeYear) {
+        this.name = name;
+        this.gradeYear = gradeYear;
+        id++;
+        this.studentID = gradeYear + "" + id;
+    }
+
+    public void enroll(String course) {
+        courses.add(course);
+        balance += courseCost;
+    }
+
+    public void viewBalance() {
+        System.out.println("Your balance is: $" + balance);
+    }
+
+    public void payTuition() {
+        viewBalance();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your payment: $");
+        double payment = scanner.nextDouble();
+        balance -= payment;
+        System.out.println("Thank you for your payment of $" + payment);
+        viewBalance();
+    }
+
+    public void showInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Student ID: " + studentID);
+        System.out.println("Grade Year: " + gradeYear);
+        System.out.println("Courses Enrolled: " + courses);
+        viewBalance();
+    }
+}
+
+public class StudentDatabaseApplication {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter your grade year (1 for First, 2 for Second, 3 for Third, 4 for Final): ");
+        int gradeYear = scanner.nextInt();
+
+        Student student = new Student(name, gradeYear);
+
+        while (true) {
+            System.out.println("\nAvailable Courses:");
+            System.out.println("1. History 101");
+            System.out.println("2. Mathematics 101");
+            System.out.println("3. English 101");
+            System.out.println("4. Chemistry 101");
+            System.out.println("5. Computer Science 101");
+            System.out.println("0. Done with course selection");
+
+            System.out.print("Enter course number to enroll (or 0 to finish): ");
+            int choice = scanner.nextInt();
+
+            if (choice == 0) {
+                break;
+            }
+
+            String course;
+            switch (choice) {
+                case 1:
+                    course = "History 101";
+                    break;
+                case 2:
+                    course = "Mathematics 101";
+                    break;
+                case 3:
+                    course = "English 101";
+                    break;
+                case 4:
+                    course = "Chemistry 101";
+                    break;
+                case 5:
+                    course = "Computer Science 101";
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid course number.");
+                    continue;
+            }
+
+            student.enroll(course);
+            System.out.println("Enrolled in " + course);
+        }
+
+        System.out.println("\nStudent Information:");
+        student.showInfo();
+
+        System.out.println("\nPayment:");
+        student.payTuition();
+    }
+}
